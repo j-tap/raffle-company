@@ -8,7 +8,7 @@ const tgChannel = 'j_tap';
 (function()
 {
     const eForm = document.getElementById('main-form');
-    const form = new Form(eForm, '/users');
+    const form = new Form(eForm, '/api/users');
 
     form.formSendData(response => {
         goToTelegram(tgChannel);

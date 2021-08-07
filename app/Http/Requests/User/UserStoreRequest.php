@@ -24,7 +24,11 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'telegram' => ['required', 'min:5'],
+            'telegram' => [
+                'required',
+                'min:5',
+                'regex:/^([a-z]|[0-9]|[_])*$/',
+            ],
         ];
     }
 }

@@ -1852,7 +1852,7 @@ var tgChannel = 'j_tap';
 
 (function () {
   var eForm = document.getElementById('main-form');
-  var form = new _form_js__WEBPACK_IMPORTED_MODULE_0__.default(eForm, '/users');
+  var form = new _form_js__WEBPACK_IMPORTED_MODULE_0__.default(eForm, '/api/users');
   form.formSendData(function (response) {
     (0,_methods_js__WEBPACK_IMPORTED_MODULE_1__.goToTelegram)(tgChannel);
   });
@@ -1909,6 +1909,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
@@ -1923,17 +1925,30 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 
 
 
+var _hideClass = /*#__PURE__*/new WeakMap();
+
 var _form = /*#__PURE__*/new WeakMap();
 
 var _url = /*#__PURE__*/new WeakMap();
 
-var _showError = /*#__PURE__*/new WeakSet();
+var _fieldUpdateErrors = /*#__PURE__*/new WeakSet();
+
+var _updateErrorAlert = /*#__PURE__*/new WeakSet();
 
 var Form = /*#__PURE__*/function () {
   function Form(form, url) {
     _classCallCheck(this, Form);
 
-    _showError.add(this);
+    _updateErrorAlert.add(this);
+
+    _fieldUpdateErrors.add(this);
+
+    _defineProperty(this, "formErrors", {});
+
+    _hideClass.set(this, {
+      writable: true,
+      value: 'd-none'
+    });
 
     _form.set(this, {
       writable: true,
@@ -1956,21 +1971,103 @@ var Form = /*#__PURE__*/function () {
       var _this = this;
 
       _classPrivateFieldGet(this, _form).addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        _this.formErrors = {};
         var formData = new FormData(_classPrivateFieldGet(_this, _form));
         var requestData = (0,_methods_js__WEBPACK_IMPORTED_MODULE_0__.serializeForm)(formData);
+
+        _classPrivateMethodGet(_this, _fieldUpdateErrors, _fieldUpdateErrors2).call(_this);
+
+        _this.updateLoading(true);
+
+        _classPrivateMethodGet(_this, _updateErrorAlert, _updateErrorAlert2).call(_this);
+
         window.axios.post(_classPrivateFieldGet(_this, _url), requestData).then(function (response) {
           callback(response);
-        })["catch"](_classPrivateMethodGet(_this, _showError, _showError2));
-        event.preventDefault();
+        })["catch"](function (error) {
+          _classPrivateMethodGet(_this, _updateErrorAlert, _updateErrorAlert2).call(_this, error);
+        })["finally"](function () {
+          _classPrivateMethodGet(_this, _fieldUpdateErrors, _fieldUpdateErrors2).call(_this);
+
+          _this.updateLoading();
+        });
       });
+    }
+  }, {
+    key: "fieldUpdateError",
+    value: function fieldUpdateError(field) {
+      var classError = 'is-invalid';
+      var key = field.getAttribute('name');
+      var errorFeedback = field.nextElementSibling;
+      var textError = '';
+
+      if (this.formErrors[key]) {
+        textError = this.formErrors[key].join();
+        field.classList.add(classError);
+      } else {
+        field.classList.remove(classError);
+      }
+
+      errorFeedback.innerText = textError;
+    }
+  }, {
+    key: "updateLoading",
+    value: function updateLoading() {
+      var is = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+      var btn = _classPrivateFieldGet(this, _form).querySelector('[type="submit"]');
+
+      var preloader = btn.querySelector('.spinner-border');
+
+      if (is) {
+        preloader.classList.remove(_classPrivateFieldGet(this, _hideClass));
+        btn.setAttribute('disabled', true);
+      } else {
+        preloader.classList.add(_classPrivateFieldGet(this, _hideClass));
+        btn.removeAttribute('disabled');
+      }
     }
   }]);
 
   return Form;
 }();
 
-function _showError2(error) {
-  alert(error);
+function _fieldUpdateErrors2() {
+  var _this2 = this;
+
+  Array.prototype.slice.call(_classPrivateFieldGet(this, _form).querySelectorAll("[name]")).forEach(function (field) {
+    return _this2.fieldUpdateError(field);
+  });
+}
+
+function _updateErrorAlert2(error) {
+  var alert = _classPrivateFieldGet(this, _form).querySelector('.alert-danger');
+
+  var msg = '';
+
+  if (error) {
+    var resp = error.response;
+    msg = error;
+
+    if (resp) {
+      if (resp.statusText) msg = resp.statusText;
+
+      if (resp.data) {
+        if (resp.data.message) msg = resp.data.message;
+      }
+
+      if (resp.data.errors) {
+        this.formErrors = resp.data.errors;
+      }
+    }
+
+    alert.classList.remove(_classPrivateFieldGet(this, _hideClass));
+  } else {
+    alert.classList.add(_classPrivateFieldGet(this, _hideClass));
+  }
+
+  alert.innerText = msg;
 }
 
 
