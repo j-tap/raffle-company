@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Services\User\UserService;
-use Illuminate\Contracts\Routing\ResponseFactory;
+// use Illuminate\Contracts\Routing\ResponseFactory;
 
 class UserController extends Controller
 {
@@ -37,7 +37,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\UserStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserStoreRequest $request): ResponseFactory
+    public function store(UserStoreRequest $request): Response
     {
         $validatedData = $request->validated();
         $result = $this->userService->store($validatedData);

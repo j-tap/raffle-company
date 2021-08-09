@@ -1848,14 +1848,45 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
+window.hideClass = 'd-none';
 var tgChannel = 'j_tap';
+var personalCodeVariable = 'personal_code';
 
 (function () {
+  var eStart = document.getElementById('start-block');
+  var eFinal = document.getElementById('final-block');
   var eForm = document.getElementById('main-form');
-  var form = new _form_js__WEBPACK_IMPORTED_MODULE_0__.default(eForm, '/api/users');
-  form.formSendData(function (response) {
+  var eBtnGotoTg = document.getElementById('btn-goto-tg');
+  var personalCode = localStorage.getItem(personalCodeVariable);
+
+  if (personalCode) {
+    showSuccess(personalCode);
+    eBtnGotoTg.addEventListener('click', function (event) {
+      (0,_methods_js__WEBPACK_IMPORTED_MODULE_1__.goToTelegram)(tgChannel);
+    });
+  } else {
+    var form = new _form_js__WEBPACK_IMPORTED_MODULE_0__.default(eForm, '/api/users');
+    form.formSendData(function (resp) {
+      personalCode = resp.data.code;
+
+      if (personalCode) {
+        localStorage.setItem(personalCodeVariable, personalCode);
+        showSuccess(personalCode);
+      } else {
+        form.updateErrorAlert('Unknow error!');
+      }
+    });
+  }
+
+  function showSuccess(code) {
+    var eCode = document.getElementById('code');
+    eCode.innerText = code;
+    eStart.classList.add(window.hideClass);
+    eFinal.classList.remove(window.hideClass);
     (0,_methods_js__WEBPACK_IMPORTED_MODULE_1__.goToTelegram)(tgChannel);
-  });
+  }
+
+  ;
 })();
 
 /***/ }),
@@ -1925,30 +1956,19 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 
 
 
-var _hideClass = /*#__PURE__*/new WeakMap();
-
 var _form = /*#__PURE__*/new WeakMap();
 
 var _url = /*#__PURE__*/new WeakMap();
 
 var _fieldUpdateErrors = /*#__PURE__*/new WeakSet();
 
-var _updateErrorAlert = /*#__PURE__*/new WeakSet();
-
 var Form = /*#__PURE__*/function () {
   function Form(form, url) {
     _classCallCheck(this, Form);
 
-    _updateErrorAlert.add(this);
-
     _fieldUpdateErrors.add(this);
 
     _defineProperty(this, "formErrors", {});
-
-    _hideClass.set(this, {
-      writable: true,
-      value: 'd-none'
-    });
 
     _form.set(this, {
       writable: true,
@@ -1981,12 +2001,12 @@ var Form = /*#__PURE__*/function () {
 
         _this.updateLoading(true);
 
-        _classPrivateMethodGet(_this, _updateErrorAlert, _updateErrorAlert2).call(_this);
+        _this.updateErrorAlert();
 
         window.axios.post(_classPrivateFieldGet(_this, _url), requestData).then(function (response) {
           callback(response);
         })["catch"](function (error) {
-          _classPrivateMethodGet(_this, _updateErrorAlert, _updateErrorAlert2).call(_this, error);
+          _this.updateErrorAlert(error);
         })["finally"](function () {
           _classPrivateMethodGet(_this, _fieldUpdateErrors, _fieldUpdateErrors2).call(_this);
 
@@ -2021,12 +2041,42 @@ var Form = /*#__PURE__*/function () {
       var preloader = btn.querySelector('.spinner-border');
 
       if (is) {
-        preloader.classList.remove(_classPrivateFieldGet(this, _hideClass));
+        preloader.classList.remove(window.hideClass);
         btn.setAttribute('disabled', true);
       } else {
-        preloader.classList.add(_classPrivateFieldGet(this, _hideClass));
+        preloader.classList.add(window.hideClass);
         btn.removeAttribute('disabled');
       }
+    }
+  }, {
+    key: "updateErrorAlert",
+    value: function updateErrorAlert(error) {
+      var alert = _classPrivateFieldGet(this, _form).querySelector('.alert-danger');
+
+      var msg = '';
+
+      if (error) {
+        var resp = error.response;
+        msg = error;
+
+        if (resp) {
+          if (resp.statusText) msg = resp.statusText;
+
+          if (resp.data) {
+            if (resp.data.message) msg = resp.data.message;
+          }
+
+          if (resp.data.errors) {
+            this.formErrors = resp.data.errors;
+          }
+        }
+
+        alert.classList.remove(window.hideClass);
+      } else {
+        alert.classList.add(window.hideClass);
+      }
+
+      alert.innerText = msg;
     }
   }]);
 
@@ -2039,35 +2089,6 @@ function _fieldUpdateErrors2() {
   Array.prototype.slice.call(_classPrivateFieldGet(this, _form).querySelectorAll("[name]")).forEach(function (field) {
     return _this2.fieldUpdateError(field);
   });
-}
-
-function _updateErrorAlert2(error) {
-  var alert = _classPrivateFieldGet(this, _form).querySelector('.alert-danger');
-
-  var msg = '';
-
-  if (error) {
-    var resp = error.response;
-    msg = error;
-
-    if (resp) {
-      if (resp.statusText) msg = resp.statusText;
-
-      if (resp.data) {
-        if (resp.data.message) msg = resp.data.message;
-      }
-
-      if (resp.data.errors) {
-        this.formErrors = resp.data.errors;
-      }
-    }
-
-    alert.classList.remove(_classPrivateFieldGet(this, _hideClass));
-  } else {
-    alert.classList.add(_classPrivateFieldGet(this, _hideClass));
-  }
-
-  alert.innerText = msg;
 }
 
 

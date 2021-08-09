@@ -27,7 +27,9 @@ class UserStoreRequest extends FormRequest
             'telegram' => [
                 'required',
                 'min:5',
+                'max:32',
                 'regex:/^([a-z]|[0-9]|[_])*$/',
+                'unique:user_metas',
             ],
         ];
     }

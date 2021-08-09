@@ -2,7 +2,6 @@ import { serializeForm } from './methods.js';
 
 export default class Form {
     formErrors = {};
-    #hideClass = 'd-none';
     #form;
     #url;
 
@@ -24,7 +23,7 @@ export default class Form {
 
             this.#fieldUpdateErrors();
             this.updateLoading(true);
-            this.#updateErrorAlert();
+            this.updateErrorAlert();
 
             window.axios.post(this.#url, requestData)
                 .then(response =>
@@ -33,7 +32,7 @@ export default class Form {
                 })
                 .catch((error) =>
                 {
-                    this.#updateErrorAlert(error);
+                    this.updateErrorAlert(error);
                 })
                 .finally(() =>
                 {
@@ -70,24 +69,17 @@ export default class Form {
 
         if (is)
         {
-            preloader.classList.remove(this.#hideClass);
+            preloader.classList.remove(window.hideClass);
             btn.setAttribute('disabled', true);
         }
         else
         {
-            preloader.classList.add(this.#hideClass);
+            preloader.classList.add(window.hideClass);
             btn.removeAttribute('disabled');
         }
     }
 
-    #fieldUpdateErrors()
-    {
-        Array.prototype.slice
-            .call(this.#form.querySelectorAll(`[name]`))
-            .forEach((field) => this.fieldUpdateError(field));
-    }
-
-    #updateErrorAlert(error)
+    updateErrorAlert(error)
     {
         const alert = this.#form.querySelector('.alert-danger');
         let msg = '';
@@ -109,13 +101,20 @@ export default class Form {
                     this.formErrors = resp.data.errors;
                 }
             }
-            alert.classList.remove(this.#hideClass);
+            alert.classList.remove(window.hideClass);
         }
         else
         {
-            alert.classList.add(this.#hideClass);
+            alert.classList.add(window.hideClass);
         }
 
         alert.innerText = msg;
     };
+
+    #fieldUpdateErrors()
+    {
+        Array.prototype.slice
+            .call(this.#form.querySelectorAll(`[name]`))
+            .forEach((field) => this.fieldUpdateError(field));
+    }
  }

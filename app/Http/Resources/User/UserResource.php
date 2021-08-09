@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\UserMeta\UserMetaResource;
 
 class UserResource extends JsonResource
 {
@@ -14,9 +15,11 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $meta = new UserMetaResource($this->meta);
         return [
-            'id' => $this->id,
-            'telegram' => $this->telegram,
+            // 'id' => $this->id,
+            'code' => $meta->code,
+            'telegram' => $meta->telegram,
         ];
     }
 }

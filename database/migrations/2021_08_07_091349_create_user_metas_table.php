@@ -16,7 +16,8 @@ class CreateUserMetasTable extends Migration
         Schema::create('user_metas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('telegram');
+            $table->bigInteger('code');
+            $table->string('telegram', 32)->unique();
         });
     }
 
