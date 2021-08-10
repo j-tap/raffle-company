@@ -3,11 +3,11 @@
 namespace App\Services\User;
 
 use Illuminate\Http\Request;
-
+use Exception;
 use App\Models\User;
 use App\Models\UserMeta;
 use App\Http\Resources\User\UserResource;
-use App\Http\Requests\User\UserStoreRequest;
+// use App\Http\Requests\User\UserStoreRequest;
 use App\Services\Methods;
 
 class UserService
@@ -20,13 +20,20 @@ class UserService
      */
     public function store(array $data): UserResource
     {
+        $isExistUsername = Methods::existUsernameTelegram($data['telegram']);
+
+        if (!$isExistUsername)
+        {
+            throw new Exception('Такого аккаунта не существует');
+        }
+
         $user = new User();
         $user->name = 'user-'. $data['telegram'];
 
         $nextId = Methods::getIncrementFromTable('users');
 
-        $user->email = "email-user-$nextId";
-        $user->password = bcrypt("password-user-$nextId");
+        $user->email = 'email-user-'. $nextId;
+        $user->password = bcrypt('password-user-'. $nextId);
 
         $user->save();
 
@@ -37,7 +44,6 @@ class UserService
 
         return new UserResource($user);
     }
-
 
     /**
      * generateUniqueCode
