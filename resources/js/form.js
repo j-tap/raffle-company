@@ -51,7 +51,7 @@ export default class Form {
 
         if (this.formErrors[key])
         {
-            textError = this.formErrors[key].join();
+            textError = this.formErrors[key].join(', \n');
             field.classList.add(classError);
         }
         else

@@ -15,8 +15,5 @@
         @include('includes.footer')
     </footer>
 
-    <!-- Scripts -->
-    @stack('scripts')
-
 </body>
 </html>

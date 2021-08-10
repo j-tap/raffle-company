@@ -33,4 +33,20 @@ class UserStoreRequest extends FormRequest
             ],
         ];
     }
+
+    /**
+     * messages
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'telegram.required' => 'Поле обязательно для заполнения',
+            'telegram.min' => 'Должно быть не менее 5 символов',
+            'telegram.max' => 'Должно быть не более 32 символов',
+            'telegram.regex' => 'Допустимые символы: латинские буквы, цифры и знак подчёркивания',
+            'telegram.unique' => 'Этот аккаунт Telegram уже участвует',
+        ];
+    }
 }
