@@ -304,22 +304,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _methods_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./methods.js */ "./resources/js/methods.js");
 
 
+var tgChannel = 'test_group_123';
 window.hideClass = 'd-none';
-var tgChannel = 'j_tap';
 var personalCodeVariable = 'personal_code';
 
 (function () {
   var eStart = document.getElementById('start-block');
   var eFinal = document.getElementById('final-block');
   var eForm = document.getElementById('main-form');
-  var eBtnGotoTg = document.getElementById('btn-goto-tg');
+  var aBtnsGotoTg = document.querySelectorAll('.btn-goto-tg');
   var personalCode = localStorage.getItem(personalCodeVariable);
+
+  for (var i = 0; i < aBtnsGotoTg.length; i++) {
+    aBtnsGotoTg[i].addEventListener('click', function (event) {
+      (0,_methods_js__WEBPACK_IMPORTED_MODULE_1__.goToTelegram)(tgChannel);
+    });
+  }
 
   if (personalCode) {
     showSuccess(personalCode);
-    eBtnGotoTg.addEventListener('click', function (event) {
-      (0,_methods_js__WEBPACK_IMPORTED_MODULE_1__.goToTelegram)(tgChannel);
-    });
   } else {
     var form = new _Form_js__WEBPACK_IMPORTED_MODULE_0__.default(eForm, '/api/users');
     form.formSendData(function (resp) {
@@ -339,7 +342,6 @@ var personalCodeVariable = 'personal_code';
     eCode.innerText = code;
     eStart.classList.add(window.hideClass);
     eFinal.classList.remove(window.hideClass);
-    (0,_methods_js__WEBPACK_IMPORTED_MODULE_1__.goToTelegram)(tgChannel);
   }
 
   ;

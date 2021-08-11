@@ -236,4 +236,6 @@ return [
         'password' => env('ADMIN_PASSWORD'),
     ],
 
+    'telegram_bot' => env('TELEGRAM_BOT'),
+
 ];

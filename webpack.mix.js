@@ -15,3 +15,12 @@ mix
     .js('resources/js/app.js', 'public/js/app.js')
     .js('resources/js/raffle.js', 'public/js/raffle.js')
     .sass('resources/scss/app.scss', 'public/css/app.css');
+
+if (mix.inProduction())
+{
+    mix.version();
+}
+else
+{
+    mix.browserSync('localhost:8000');
+}

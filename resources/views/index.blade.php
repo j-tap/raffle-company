@@ -6,8 +6,13 @@
 
 @section('content')
 <section class="container mt-5">
+    <h1 class="h3 text-center mb-4">Розыгрыш призов Targeleon</h1>
     <div id="start-block">
-        <h1 class="h3 text-center mb-5">Заполните форму для участия в розыгрыше призов</h1>
+        <div class="text-center mb-5">
+            <h2 class="h5 mb-2">Перейдите в Telegram и подпишитесь на наш канал</h2>
+            <button class="btn btn-primary btn-goto-tg">Перейти в Telegram канал</button>
+        </div>
+        <h2 class="h5 text-center mb-4">Затем заполните форму для участия</h2>
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
                 <form id="main-form" class="main-form">
@@ -29,15 +34,15 @@
         </div>
     </div>
     <div class="final-block d-none" id="final-block">
-        <h1 class="h3 text-center mb-5">Вы успешно зарегистрировались в розыгрыше призов</h1>
+        <h2 class="h5 text-center mb-5">Вы успешно зарегистрировались в розыгрыше призов</h2>
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
                 <h2 class="h6 mb-3">
                     <div>Ваш персональный код: </div>
                     <b class="h4" id="code"></b>
-                    <div>Запишите его</div>
+                    <div>Сохраните его до завершения розыгрыша</div>
                 </h2>
-                <button class="btn btn-primary" id="btn-goto-tg">Перейти в Telegram канал розыгрыша</button>
+                <button class="btn btn-primary btn-goto-tg">Перейти в Telegram канал</button>
             </div>
         </div>
     </div>

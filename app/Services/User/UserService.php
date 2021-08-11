@@ -9,6 +9,7 @@ use App\Models\UserMeta;
 use App\Http\Resources\User\UserResource;
 // use App\Http\Requests\User\UserStoreRequest;
 use App\Services\Methods;
+use App\Services\Telegram;
 
 class UserService
 {
@@ -20,12 +21,19 @@ class UserService
      */
     public function store(array $data): UserResource
     {
-        $isExistUsername = Methods::existUsernameTelegram($data['telegram']);
+        // $telegram = new Telegram();
+        // $test = $telegram->test();
+        // dd($test);
 
+        $isExistUsername = Methods::existUsernameTelegram($data['telegram']);
         if (!$isExistUsername)
         {
             throw new Exception('Такого аккаунта не существует');
         }
+        // if ()
+        // {
+
+        // }
 
         $user = new User();
         $user->name = 'user-'. $data['telegram'];
@@ -38,7 +46,16 @@ class UserService
         $user->save();
 
         $meta = new UserMeta;
-        $meta->code = $this->generateUniqueCode();
+
+        $min = 1000;
+        $max = 9999;
+        if ($nextId >= 8999)
+        {
+            $min = 10000;
+            $max = 99999;
+        }
+
+        $meta->code = $this->generateUniqueCode($min, $max);
         $meta->telegram = $data['telegram'];
         $meta->user()->associate($user)->save();
 
@@ -50,11 +67,11 @@ class UserService
      *
      * @return int
      */
-    private function generateUniqueCode()
+    private function generateUniqueCode(int $from = 1000, int $to = 9999)
     {
         do
         {
-            $code = random_int(100000, 999999);
+            $code = random_int($from, $to);
         }
         while (UserMeta::where('code', '=', $code)->first());
 
