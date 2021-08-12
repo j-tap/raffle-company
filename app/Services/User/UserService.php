@@ -9,7 +9,7 @@ use App\Models\UserMeta;
 use App\Http\Resources\User\UserResource;
 // use App\Http\Requests\User\UserStoreRequest;
 use App\Services\Methods;
-use App\Services\Telegram;
+use App\Services\TelegramBot;
 
 class UserService
 {
@@ -21,6 +21,7 @@ class UserService
      */
     public function store(array $data): UserResource
     {
+        TelegramBot::test();
         // $telegram = new Telegram();
         // $test = $telegram->test();
         // dd($test);

@@ -9,7 +9,7 @@
     <h1 class="h3 text-center mb-4">Розыгрыш призов Targeleon</h1>
     <div id="start-block">
         <div class="text-center mb-5">
-            <h2 class="h5 mb-2">Перейдите в Telegram и подпишитесь на наш канал</h2>
+            <h2 class="h5 mb-2">Перейдите в Telegram и подпишитесь на наш канал, если ещё не сделали этого</h2>
             <button class="btn btn-primary btn-goto-tg">Перейти в Telegram канал</button>
         </div>
         <h2 class="h5 text-center mb-4">Затем заполните форму для участия</h2>

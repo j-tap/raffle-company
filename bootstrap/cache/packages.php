@@ -52,4 +52,15 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
+  'westacks/telebot' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'WeStacks\\TeleBot\\Laravel\\TeleBotServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'TeleBot' => 'WeStacks\\TeleBot\\Laravel\\TeleBot',
+    ),
+  ),
 );

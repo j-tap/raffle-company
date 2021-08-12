@@ -9,9 +9,10 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/psr7": "1.*",
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
-        "longman/telegram-bot": "^0.74.0"
+        "westacks/telebot": "^1.12"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
