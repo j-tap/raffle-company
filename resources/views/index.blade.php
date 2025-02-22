@@ -6,7 +6,7 @@
 
 @section('content')
 <section class="container mt-5">
-    <h1 class="h3 text-center mb-4">Розыгрыш призов Targeleon</h1>
+    <h1 class="h3 text-center mb-4">Розыгрыш призов</h1>
     <div id="start-block">
         <div class="text-center mb-5">
             <h2 class="h5 mb-2">Перейдите в Telegram и подпишитесь на наш канал, если ещё не сделали этого</h2>
